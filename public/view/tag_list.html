@@ -1,0 +1,6 @@
+<ul class="tag-list">
+    <li class="item" ng-repeat="item in tags">
+        <a href="#/word/list/[[item.name]]">[[item.name]]</a>
+        <span ng-click="tags.splice($index, 1)">X</span>
+    </li>
+</ul>

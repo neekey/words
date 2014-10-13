@@ -1,0 +1,15 @@
+<div ng-show="current < list.length">
+
+    <h5>单词含义</h5>
+    <ul>
+        <li ng-repeat="item in list[current].meanings">[[item.desc]]</li>
+    </ul>
+
+    <div class="">
+        <input type="text" placeholder="写出对应的单词" ng-model="userGuess"> <span class="btn btn-small btn-success" ng-disabled="userGuess != list[current].name" ng-click="action.next()">下一个</span>
+    </div>
+</div>
+
+<div ng-if="current == list.length">
+    恭喜你已经完成所有单词的记忆
+</div>

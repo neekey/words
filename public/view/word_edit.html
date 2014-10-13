@@ -1,0 +1,56 @@
+
+<div class="edit-word">
+
+    <form ng-submit="action.add()" class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label">单词</label>
+            <div class="controls">
+                <input class="g-real-time-edit" type="text" placeholder="new word" ng-model="word.name" ng-required>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">音标</label>
+            <div class="controls">
+                <input class="g-real-time-edit" type="text" placeholder="音标" ng-model="word.phonetic" ng-required>
+            </div>
+        </div>
+
+
+
+        <div class="control-group">
+            <label class="control-label" ng-click="word.meanings.push({ sentences: []})">添加释义</label>
+            <div class="controls">
+                <!-- 词义 -->
+                <div ng-repeat="meaning in word.meanings">
+                    <input class="g-real-time-edit" type="text" placeholder="含义" ng-model="meaning.desc" ng-required>
+                    <input class="g-real-time-edit" type="text" placeholder="类型" ng-model="meaning.type">
+
+                    <span ng-click="meaning.sentences.push({})">添加例句</span>
+                    <span ng-click="word.meanings.splice($index, 1 )">X</span>
+                    <div ng-repeat="sent in meaning.sentences">
+                        <input class="g-real-time-edit" type="text" ng-model="sent.name" ng-required>
+                        <input class="g-real-time-edit" type="text" ng-model="sent.translate">
+                        <span ng-click="meaning.sentences.splice($index, 1 )">X</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" ng-click="word.tags.push('')">添加tag</label>
+            <div class="controls">
+                <span ng-repeat="tag in word.tags track by $index">
+                    <input class="g-real-time-edit" type="text" ng-model="word.tags[$index]">
+                    <span ng-click="word.tags.splice($index, 1 )">X</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">其他备注</label>
+            <div class="controls">
+                <textarea class="g-real-time-edit" placeholder="音标" ng-model="word.desc"></textarea>
+            </div>
+        </div>
+    </form>
+</div>

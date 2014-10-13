@@ -1,0 +1,6 @@
+<ul class="word-list">
+    <li class="item" ng-repeat="item in list">
+        <span><a href="#/word/edit/[[item._id]]">[[item.name]]</a></span>
+        <span ng-click="list.splice($index, 1)">X</span>
+    </li>
+</ul>

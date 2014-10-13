@@ -1,0 +1,65 @@
+
+<div class="new-word">
+
+    <h4>新建单词/短语</h4> <hr>
+    <form ng-submit="action.add()" class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label">单词</label>
+            <div class="controls">
+                <input type="text" placeholder="new word" ng-model="model.newWord.name" ng-required>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">音标</label>
+            <div class="controls">
+                <input type="text" placeholder="音标" ng-model="model.newWord.phonetic" ng-required>
+            </div>
+        </div>
+
+
+
+        <div class="control-group">
+            <label class="control-label" ng-click="model.newWord.meanings.push({ sentences: []})">添加释义</label>
+            <div class="controls">
+                <!-- 词义 -->
+                <div ng-repeat="meaning in model.newWord.meanings">
+                    <input class="col-6" type="text" placeholder="含义" ng-model="meaning.desc" ng-required>
+                    <input class="col-6" type="text" placeholder="类型" ng-model="meaning.type">
+
+                    <span ng-click="meaning.sentences.push({})">添加例句</span>
+                    <span ng-click="model.newWord.meanings.splice($index, 1 )">X</span>
+                    <div ng-repeat="sent in meaning.sentences">
+                        <input type="text" ng-model="sent.name" ng-required>
+                        <input type="text" ng-model="sent.translate">
+                        <span ng-click="meaning.sentences.splice($index, 1 )">X</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" ng-click="model.newWord.tags.push('')">添加tag</label>
+            <div class="controls">
+                <span ng-repeat="tag in model.newWord.tags track by $index">
+                    <input type="text" ng-model="model.newWord.tags[$index]">
+                    <span ng-click="model.newWord.tags.splice($index, 1 )">X</span>
+                </span>
+            </div>
+        </div>
+
+
+
+        <div class="control-group">
+            <label class="control-label">其他备注</label>
+            <div class="controls">
+                <textarea placeholder="音标" ng-model="model.newWord.desc"></textarea>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn">添加</button>
+            </div>
+        </div>
+    </form>
+</div>
