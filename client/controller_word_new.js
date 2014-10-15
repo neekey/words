@@ -1,15 +1,31 @@
-MeteorApp.controller( 'WordNewCtr', [ '$scope', 'Utils', '$location', function( $scope, Utils, $location ){
+MeteorApp.controller( 'WordNewCtr', [ '$scope', 'Utils', '$location', '$collection', function( $scope, Utils, $location, $collection ){
 
     var userId = Meteor.userId();
+    $collection( Models.tags, { user_id: userId }).bind( $scope, 'tags', true, true );
 
     $scope.model = {
         newWord: {
             user_id: userId,
-            name: 'hello',
+            name: '',
             phonetic: '',
-            meanings: [],
+            meanings: [
+                {
+                    desc: "",
+                    type: "",
+                    sentences: []
+                }
+            ],
+            wrong: 0,
+            right: 0,
             tags: [],
             desc: ""
+        },
+
+        options: {
+            valueField: 'name',
+            labelField: 'name',
+            searchField: ['name'],
+            options: $scope.tags
         }
     };
 
@@ -27,20 +43,7 @@ MeteorApp.controller( 'WordNewCtr', [ '$scope', 'Utils', '$location', function( 
                 meaning.sentences = sentences;
             });
 
-            // 处理 tag
-            $scope.model.newWord.tags.forEach(function( tag ){
-                if( tag ){
-                    var exist = Models.tags.findOne( { name: tag, user_id: userId });
-
-                    if( !exist ){
-                        Models.tags.insert({ name: tag, user_id: userId });
-                    }
-                }
-            });
-
-            var newWordId = Models.words.insert( Utils.clean( $scope.model.newWord ), function(){
-                console.log( arguments, newWordId );
-            });
+            var newWordId = Models.words.insert( Utils.clean( $scope.model.newWord ));
 
             // 跳转到schema详情页
             $location.path( '/word/edit/' + newWordId ).replace();

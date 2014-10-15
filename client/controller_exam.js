@@ -9,9 +9,24 @@ MeteorApp.controller( 'ExamCtr', [ '$scope', '$collection', function( $scope, $c
 
     $scope.action = {
         next: function(){
+            if( $scope.userGuess == $scope.list[ $scope.current ].name || $scope.showAnswer ){
 
-            $scope.userGuess = '';
-            $scope.current++;
+                var current = $scope.list[ $scope.current ];
+
+                if( !$scope.showAnswer ){
+                    Models.words.update({ _id: current._id}, { $inc: { right: 1 } } );
+                }
+
+                $scope.userGuess = '';
+                $scope.current++;
+                $scope.showAnswer = false;
+
+            }
+        },
+        showAnswer: function(){
+            $scope.showAnswer = true;
+            var current = $scope.list[ $scope.current ];
+            Models.words.update({ _id: current._id}, { $inc: { wrong: 1 } } );
         }
     }
 

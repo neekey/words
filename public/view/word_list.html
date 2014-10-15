@@ -1,6 +1,35 @@
-<ul class="word-list">
-    <li class="item" ng-repeat="item in list">
-        <span><a href="#/word/edit/[[item._id]]">[[item.name]]</a></span>
-        <span ng-click="list.splice($index, 1)">X</span>
-    </li>
-</ul>
+<h4>我的单词</h4> <hr>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>单词</th>
+            <th>解释</th>
+            <th>tag</th>
+            <th>记忆记录</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in list">
+            <td><a href="#/word/edit/[[item._id]]">[[item.name]]</a></td>
+            <td>
+                <ul>
+                    <li ng-repeat="meaning in item.meanings">[[meaning.desc]]</li>
+                </ul>
+            </td>
+            <td>
+                <span class="label label-info" ng-repeat="tag in item.tags">[[tag]]</span>
+            </td>
+            <td>
+                <ul>
+                    <li>正确: [[item.right]]</li>
+                    <li>错误: [[item.wrong]]</li>
+                </ul>
+            </td>
+            <td>
+                <span ng-click="list.splice($index, 1)" class="btn btn-danger btn-small">删除</span>
+            </td>
+        </tr>
+    </tbody>
+</table>

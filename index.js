@@ -32,67 +32,61 @@ var _sentence = {
 };
 
 if (Meteor.isClient) {
-
-
-
-
-
-
-
-
-
-
-//
-//    Template.word_list.wordList = function(){
-//        return Words.find({});
-//    };
-//
-//    Template.word_list.events({
-//        'submit form': function( e ){
-//            e.preventDefault();
-//            var form = e.currentTarget;
-//            var name = form.name.value;
-//
-//            if( name ){
-//                Words.insert({
-//                    name: name
-//                }, function(){
-//                    console.log( 'insert callback', arguments );
-//                });
-//            }
-//
-//            form.reset();
-//        }
-//    })
-//    Template.leaderboard.players = function () {
-//        return Players.find({}, {sort: {score: -1, name: 1}});
-//    };
-//
-//    Template.leaderboard.selected_name = function () {
-//        var player = Players.findOne(Session.get("selected_player"));
-//        return player && player.name;
-//    };
-//
-//    Template.player.selected = function () {
-//        return Session.equals("selected_player", this._id) ? "selected" : '';
-//    };
-//
-//    Template.leaderboard.events({
-//        'click button.inc': function () {
-//            Players.update(Session.get("selected_player"), {$inc: {score: 5}});
-//        }
-//    });
-//
-//    Template.player.events({
-//        'click': function () {
-//            Session.set("selected_player", this._id);
-//        }
-//    });
 }
 
 // On server startup, create some players if the database is empty.
 if (Meteor.isServer) {
     Meteor.startup(function () {
-        // code to run on server at startup
+
+        /**
+         * 监控word变化更新tag
+         * @param userId
+         * @param tags
+         */
+        function updateTags( userId, tags ){
+            tags.forEach(function( tag ){
+                if( tag ){
+                    var exist = Models.tags.findOne( { name: tag, user_id: userId });
+
+                    if( !exist ){
+                        Models.tags.insert({ name: tag, user_id: userId });
+                    }
+                }
+            });
+        }
+
+        Models.words.allow({
+            remove: function(){
+                return true;
+            },
+            insert: function( userId, doc ){
+                updateTags( userId, doc.tags );
+                return true;
+            },
+            update: function( userId, doc, fields, modifier ){
+
+                if( modifier && modifier.$set && modifier.$set.tags ){
+                    var tags = modifier.$set.tags;
+                    tags && updateTags( userId, modifier.$set.tags )
+                }
+
+                return true;
+            }
+        });
+
+        Models.tags.allow({
+            remove: function( userId, doc ){
+                Models.words.find( { user_id: userId, tags: { $all: [ doc.name ] } }).forEach(function( word ){
+                    word.tags.forEach( function( tag, index ){
+                        if( doc.name == tag ){
+                            word.tags.splice( index, 1 );
+                            Models.words.update({ _id: word._id }, word );
+                        }
+                    });
+                });
+
+                return true;
+            }
+        })
     });
 }

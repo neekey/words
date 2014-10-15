@@ -6,31 +6,32 @@
         <div class="control-group">
             <label class="control-label">单词</label>
             <div class="controls">
-                <input type="text" placeholder="new word" ng-model="model.newWord.name" ng-required>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">音标</label>
-            <div class="controls">
-                <input type="text" placeholder="音标" ng-model="model.newWord.phonetic" ng-required>
+                <input class="span2" type="text" placeholder="new word" ng-model="model.newWord.name" ng-required>
             </div>
         </div>
 
-
-
         <div class="control-group">
-            <label class="control-label" ng-click="model.newWord.meanings.push({ sentences: []})">添加释义</label>
+            <label class="control-label" ng-click="model.newWord.meanings.push({ sentences: []})">释义</label>
             <div class="controls">
                 <!-- 词义 -->
                 <div ng-repeat="meaning in model.newWord.meanings">
-                    <input class="col-6" type="text" placeholder="含义" ng-model="meaning.desc" ng-required>
-                    <input class="col-6" type="text" placeholder="类型" ng-model="meaning.type">
+                    <input class="span2" type="text" placeholder="含义" ng-model="meaning.desc" ng-required>
+                    <select m-selectize class="span1" ng-model="meaning.type">
+                        <option value="名词">名词</option>
+                        <option value="形容词">形容词</option>
+                        <option value="动词">动词</option>
+                        <option value="副词">副词</option>
+                        <option value="介词">介词</option>
+                        <option value="冠词">冠词</option>
+                        <option value="连词">连词</option>
+                        <option value="感叹词">感叹词</option>
+                    </select>
 
                     <span ng-click="meaning.sentences.push({})">添加例句</span>
                     <span ng-click="model.newWord.meanings.splice($index, 1 )">X</span>
                     <div ng-repeat="sent in meaning.sentences">
-                        <input type="text" ng-model="sent.name" ng-required>
-                        <input type="text" ng-model="sent.translate">
+                        <input type="text" placeholder="例句" ng-model="sent.name" ng-required>
+                        <input type="text" placeholder="中文翻译" ng-model="sent.translate">
                         <span ng-click="meaning.sentences.splice($index, 1 )">X</span>
                     </div>
                 </div>
@@ -38,16 +39,18 @@
         </div>
 
         <div class="control-group">
-            <label class="control-label" ng-click="model.newWord.tags.push('')">添加tag</label>
+            <label class="control-label">音标</label>
             <div class="controls">
-                <span ng-repeat="tag in model.newWord.tags track by $index">
-                    <input type="text" ng-model="model.newWord.tags[$index]">
-                    <span ng-click="model.newWord.tags.splice($index, 1 )">X</span>
-                </span>
+                <input type="text" class="span2" placeholder="音标" ng-model="model.newWord.phonetic" ng-required>
             </div>
         </div>
 
-
+        <div class="control-group">
+            <label class="control-label">标签</label>
+            <div class="controls">
+                <select class="new-word-tags" options="model.options" multiple m-selectize ng-model="model.newWord.tags"></select>
+            </div>
+        </div>
 
         <div class="control-group">
             <label class="control-label">其他备注</label>

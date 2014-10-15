@@ -1,13 +1,20 @@
+<h4>单词测试</h4> <hr>
+
 <div ng-show="current < list.length">
 
     <h5>单词含义</h5>
+    <div>历史记录 - 正确: [[ list[current].right ]] 错误: [[ list[current].wrong ]]</div>
+
     <ul>
         <li ng-repeat="item in list[current].meanings">[[item.desc]]</li>
     </ul>
 
-    <div class="">
-        <input type="text" placeholder="写出对应的单词" ng-model="userGuess"> <span class="btn btn-small btn-success" ng-disabled="userGuess != list[current].name" ng-click="action.next()">下一个</span>
-    </div>
+    <form ng-submit="action.next()">
+        <a href="#/word/edit/[[ list[current]._id ]]" target="_blank" ng-show="showAnswer">[[ list[current].name ]]</a>
+        <input ng-hide="showAnswer" type="text" placeholder="写出对应的单词" ng-model="userGuess">
+        <button type="submit" class="btn btn-small btn-success" ng-disabled="!showAnswer && userGuess != list[current].name" >下一个</button>
+        <span class="btn btn-info btn-small" ng-hide="showAnswer" ng-click="action.showAnswer()">查看答案</span>
+    </form>
 </div>
 
 <div ng-if="current == list.length">

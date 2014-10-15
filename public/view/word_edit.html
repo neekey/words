@@ -1,3 +1,4 @@
+<h4>[[word.name]]</h4> <hr>
 
 <div class="edit-word">
 
@@ -8,14 +9,6 @@
                 <input class="g-real-time-edit" type="text" placeholder="new word" ng-model="word.name" ng-required>
             </div>
         </div>
-        <div class="control-group">
-            <label class="control-label">音标</label>
-            <div class="controls">
-                <input class="g-real-time-edit" type="text" placeholder="音标" ng-model="word.phonetic" ng-required>
-            </div>
-        </div>
-
-
 
         <div class="control-group">
             <label class="control-label" ng-click="word.meanings.push({ sentences: []})">添加释义</label>
@@ -37,12 +30,18 @@
         </div>
 
         <div class="control-group">
-            <label class="control-label" ng-click="word.tags.push('')">添加tag</label>
+            <label class="control-label">音标</label>
             <div class="controls">
-                <span ng-repeat="tag in word.tags track by $index">
-                    <input class="g-real-time-edit" type="text" ng-model="word.tags[$index]">
-                    <span ng-click="word.tags.splice($index, 1 )">X</span>
-                </span>
+                <input class="g-real-time-edit" type="text" placeholder="音标" ng-model="word.phonetic" ng-required>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" ng-click="word.tags.push('')">tag</label>
+            <div class="controls">
+                <select options="options" multiple class="g-real-time-edit" m-selectize type="text" ng-model="word.tags">
+                    <option ng-repeat="tag in word.tags" value="[[tag]]" ng-selected="word.tags.indexOf(tag)>=0">[[tag]]</option>
+                </select>
             </div>
         </div>
 
